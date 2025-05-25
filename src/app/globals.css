@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 13, 17, 23;
+  --background-end-rgb: 22, 27, 34;
+  --accent-blue: 0, 102, 255;
+  --accent-mint: 0, 255, 179;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  min-height: 100vh;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-espia-blue text-white px-8 py-4 rounded-xl font-semibold 
+           hover:bg-opacity-90 transition-all duration-300 
+           shadow-lg hover:shadow-espia-blue/30
+           transform hover:-translate-y-0.5;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border-2 border-espia-blue text-espia-blue 
+           px-8 py-4 rounded-xl font-semibold 
+           hover:bg-espia-blue hover:bg-opacity-10 transition-all duration-300
+           shadow-lg hover:shadow-espia-blue/20
+           transform hover:-translate-y-0.5;
+  }
+
+  .section-padding {
+    @apply py-24 px-4 sm:px-6 lg:px-8;
+  }
+
+  .card {
+    @apply bg-espia-charcoal rounded-2xl p-8 
+           shadow-xl hover:shadow-2xl 
+           transition-all duration-300
+           border border-gray-800/50
+           backdrop-blur-sm;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent 
+           bg-gradient-to-r from-espia-blue to-espia-mint;
+  }
+
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-lg 
+           border border-white/10 
+           shadow-2xl;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 
+           hover:-translate-y-1 
+           hover:shadow-xl;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-bold mb-6 font-display
+           bg-clip-text text-transparent
+           bg-gradient-to-r from-white to-gray-300;
+  }
+
+  .section-subtitle {
+    @apply text-xl text-gray-300 max-w-3xl mx-auto
+           leading-relaxed;
+  }
+
+  .feature-icon {
+    @apply w-16 h-16 rounded-2xl 
+           bg-gradient-to-br from-espia-blue/20 to-espia-mint/20
+           flex items-center justify-center
+           text-espia-blue
+           mb-6;
+  }
+
+  .price-card {
+    @apply relative overflow-hidden
+           before:absolute before:inset-0
+           before:bg-gradient-to-br before:from-espia-blue/10 before:to-espia-mint/10
+           before:opacity-0 hover:before:opacity-100
+           before:transition-opacity before:duration-300;
+  }
+
+  .testimonial-card {
+    @apply relative
+           before:absolute before:top-0 before:left-0
+           before:w-1 before:h-full
+           before:bg-gradient-to-b before:from-espia-blue before:to-espia-mint
+           before:rounded-full;
+  }
+} 
