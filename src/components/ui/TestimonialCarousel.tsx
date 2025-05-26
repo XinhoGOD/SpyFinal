@@ -39,7 +39,7 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, next]);
 
   const variants = {
     enter: (direction: number) => ({

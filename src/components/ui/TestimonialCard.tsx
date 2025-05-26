@@ -61,7 +61,7 @@ export default function TestimonialCard({
         ))}
       </div>
 
-      <p className="text-xl mb-8 italic text-gray-300 leading-relaxed">"{quote}"</p>
+      <p className="text-xl mb-8 italic text-gray-300 leading-relaxed">&ldquo;{quote}&rdquo;</p>
       
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
