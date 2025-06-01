@@ -12,6 +12,10 @@
   --accent-mint: 0, 255, 179;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -20,30 +24,37 @@ body {
     rgb(var(--background-end-rgb))
   );
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 @layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
   .btn-primary {
-    @apply bg-espia-blue text-white px-8 py-4 rounded-xl font-semibold 
+    @apply bg-espia-blue text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold 
            hover:bg-opacity-90 transition-all duration-300 
            shadow-lg hover:shadow-espia-blue/30
-           transform hover:-translate-y-0.5;
+           transform hover:-translate-y-0.5
+           text-sm sm:text-base;
   }
   
   .btn-secondary {
     @apply bg-transparent border-2 border-espia-blue text-espia-blue 
-           px-8 py-4 rounded-xl font-semibold 
+           px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold 
            hover:bg-espia-blue hover:bg-opacity-10 transition-all duration-300
            shadow-lg hover:shadow-espia-blue/20
-           transform hover:-translate-y-0.5;
+           transform hover:-translate-y-0.5
+           text-sm sm:text-base;
   }
 
   .section-padding {
-    @apply py-24 px-4 sm:px-6 lg:px-8;
+    @apply py-16 sm:py-24 px-4 sm:px-6 lg:px-8;
   }
 
   .card {
-    @apply bg-espia-charcoal rounded-2xl p-8 
+    @apply bg-espia-charcoal rounded-2xl p-6 sm:p-8 
            shadow-xl hover:shadow-2xl 
            transition-all duration-300
            border border-gray-800/50
@@ -68,22 +79,23 @@ body {
   }
 
   .section-title {
-    @apply text-4xl md:text-5xl font-bold mb-6 font-display
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 font-display
            bg-clip-text text-transparent
-           bg-gradient-to-r from-white to-gray-300;
+           bg-gradient-to-r from-white to-gray-300
+           leading-tight;
   }
 
   .section-subtitle {
-    @apply text-xl text-gray-300 max-w-3xl mx-auto
+    @apply text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto
            leading-relaxed;
   }
 
   .feature-icon {
-    @apply w-16 h-16 rounded-2xl 
+    @apply w-12 h-12 sm:w-16 sm:h-16 rounded-2xl 
            bg-gradient-to-br from-espia-blue/20 to-espia-mint/20
            flex items-center justify-center
            text-espia-blue
-           mb-6;
+           mb-4 sm:mb-6;
   }
 
   .price-card {
@@ -91,7 +103,8 @@ body {
            before:absolute before:inset-0
            before:bg-gradient-to-br before:from-espia-blue/10 before:to-espia-mint/10
            before:opacity-0 hover:before:opacity-100
-           before:transition-opacity before:duration-300;
+           before:transition-opacity before:duration-300
+           p-6 sm:p-8;
   }
 
   .testimonial-card {
@@ -99,6 +112,20 @@ body {
            before:absolute before:top-0 before:left-0
            before:w-1 before:h-full
            before:bg-gradient-to-b before:from-espia-blue before:to-espia-mint
-           before:rounded-full;
+           before:rounded-full
+           p-6 sm:p-8;
+  }
+
+  /* Nuevos estilos para mejorar la accesibilidad y usabilidad */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-espia-blue focus:ring-offset-2 focus:ring-offset-espia-charcoal;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scroll-smooth {
+    scroll-behavior: smooth;
   }
 } 

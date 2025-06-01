@@ -8,127 +8,131 @@ interface Testimonial {
   author: string;
   role: string;
   company: string;
-  image: string;
   rating: number;
+  image?: string;
 }
 
 interface TestimonialCarouselProps {
   testimonials: Testimonial[];
 }
 
-export default function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
+const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const next = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const previous = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
 
     const interval = setInterval(() => {
-      next();
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, next]);
+  }, [isAutoPlaying, testimonials.length]);
 
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
+  const handlePrevious = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const handleNext = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const getVisibleTestimonials = () => {
+    if (isMobile) {
+      return [testimonials[currentIndex]];
+    }
+    
+    const indices = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % testimonials.length;
+      indices.push(index);
+    }
+    return indices.map(i => testimonials[i]);
   };
 
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="relative h-[600px]">
-        <AnimatePresence initial={false} custom={direction}>
+    <div className="relative">
+      {/* Testimonios */}
+      <div className="relative overflow-hidden">
+        <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            className="absolute w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="w-full"
           >
-            <div className="grid md:grid-cols-2 gap-8">
-              <TestimonialCard
-                {...testimonials[currentIndex]}
-                delay={0}
-              />
-              <TestimonialCard
-                {...testimonials[(currentIndex + 1) % testimonials.length]}
-                delay={0.2}
-              />
+            <div className="grid md:grid-cols-3 gap-6">
+              {getVisibleTestimonials().map((testimonial, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 50 * (index + 1) }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <TestimonialCard {...testimonial} />
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Controles */}
-      <div className="flex justify-center items-center mt-8 gap-4">
+      {/* Controles de navegación */}
+      <div className="flex justify-center items-center gap-4 mt-8">
         <button
-          onClick={() => {
-            setIsAutoPlaying(false);
-            previous();
-          }}
-          className="p-2 rounded-full bg-espia-charcoal hover:bg-espia-blue transition-colors"
+          onClick={handlePrevious}
+          className="p-2 rounded-full bg-espia-charcoal hover:bg-espia-blue/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-espia-blue transform hover:scale-110"
+          aria-label="Testimonio anterior"
         >
-          <FiChevronLeft className="w-6 h-6 text-white" />
+          <FiChevronLeft className="w-6 h-6 text-gray-400" />
         </button>
-        
+
+        {/* Indicadores */}
         <div className="flex gap-2">
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => {
                 setIsAutoPlaying(false);
-                setDirection(index > currentIndex ? 1 : -1);
                 setCurrentIndex(index);
               }}
-              className={`w-3 h-3 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? 'bg-espia-blue w-6'
-                  : 'bg-espia-charcoal hover:bg-espia-blue/50'
+                  ? 'bg-espia-blue w-4'
+                  : 'bg-gray-600 hover:bg-gray-500'
               }`}
+              aria-label={`Ir al testimonio ${index + 1}`}
             />
           ))}
         </div>
 
         <button
-          onClick={() => {
-            setIsAutoPlaying(false);
-            next();
-          }}
-          className="p-2 rounded-full bg-espia-charcoal hover:bg-espia-blue transition-colors"
+          onClick={handleNext}
+          className="p-2 rounded-full bg-espia-charcoal hover:bg-espia-blue/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-espia-blue transform hover:scale-110"
+          aria-label="Siguiente testimonio"
         >
-          <FiChevronRight className="w-6 h-6 text-white" />
+          <FiChevronRight className="w-6 h-6 text-gray-400" />
         </button>
       </div>
     </div>
   );
-} 
+};
+
+export default TestimonialCarousel; 
