@@ -472,7 +472,7 @@ ${formData.name}
             className="max-w-4xl mx-auto"
           >
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-4">Let's Work Together</h2>
+              <h2 className="text-4xl font-bold mb-4">Let&apos;s Work Together</h2>
               <p className="text-xl text-gray-300">Get in touch to discuss your project</p>
             </div>
 
